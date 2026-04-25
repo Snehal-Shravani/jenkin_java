@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-hello-deployment
+  labels:
+    app: java-hello
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: java-hello
+  template:
+    metadata:
+      labels:
+        app: java-hello
+    spec:
+      containers:
+      - name: java-hello
+        # REPLACE with your actual Docker Hub image
+        image: snehalshravani/jenkin_java:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-hello-service
+spec:
+  selector:
+    app: java-hello
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort
